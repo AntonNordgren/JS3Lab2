@@ -1,21 +1,49 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+import QuizGame from './QuizGame.js';
+import Login from './Login.js';
+
+import firebase from 'firebase';
+
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+    constructor(props) {
+        super(props);
+
+        this.databaseRef = firebase.database().ref().child("message");
+
+        this.state = {
+            loggedIn: true,
+            message: "Inte från firebase"
+        }
+
+    }
+
+    componentDidMount() {
+        this.databaseRef.on('value', snap => {
+            this.setState({
+                message: snap.val()
+            });
+        });
+    }
+
+    render() {
+
+        let comp;
+        if(!this.state.loggedIn) {
+            comp = <Login />
+        }
+        else {
+            comp = <QuizGame database={this.database} />;
+        }
+
+        return (
+            <div className="App">
+                {comp}
+                {this.state.message}
+            </div>
+        );
+    }
 }
 
 export default App;

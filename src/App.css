@@ -1,28 +1,88 @@
-.App {
-  text-align: center;
+
+* {
+    padding: 0;
+    margin: 0;
+    outline: none;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+body {
+    background-color: beige;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.QuizGame {
+    position: relative;
+    width: 850px;
+    height: 550px;
+    margin: auto;
+    top: 30px;
+    background-color: red;
+    border: solid black 5px;
 }
 
-.App-title {
-  font-size: 1.5em;
+.Login {
+    position: relative;
+    width: 850px;
+    height: 550px;
+    margin: auto;
+    top: 30px;
+    background-color: red;
+    border: solid black 5px;
 }
 
-.App-intro {
-  font-size: large;
+.HighScores {
+    position: relative;
+    width: 100%;
+    height: 60%;
+    background-color: white;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.EditProfile {
+    position: relative;
+    width: 100%;
+    height: 60%;
+    background-color: white;
+}
+
+.QuizGameMenu {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 90%;
+    top: 5%;
+    margin: auto;
+}
+
+.QuizGameMenu button {
+    height: 25%;
+    width: 40%;
+    margin: auto;
+    background-color: blue;
+    color: white;
+    font-size: 2em;
+    border-radius: 20px;
+}
+
+.menuButton {
+    position: absolute;
+    display: block;
+    bottom: 20px;
+    left: 30%;
+    right: 30%;
+}
+
+.GameMenu {
+    position: relative;
+    width: 100%;
+    height: 60%;
+    background-color: white;
+}
+
+.Game {
+    text-align: center;
+}
+
+.GameMenu button {
+    width: 33%;
+    background-color: green;
 }
