@@ -4,11 +4,10 @@ import './App.css';
 import firebase from 'firebase';
 
 class HighScores extends Component {
-
     constructor(props) {
         super(props);
 
-        this.databaseRef = firebase.database().ref().child('highscores');
+        this.databaseRef = firebase.database().ref('highscores');
 
         this.state = {
             text: this.props.text,
@@ -17,15 +16,7 @@ class HighScores extends Component {
     }
 
     componentDidMount() {
-        console.log("componentDidMount");
         this.databaseRef.on('value', snap => {
-            let players = snap.val();
-            console.log(players);
-            for(var player in players) {
-                console.log(player);
-            }
-            this.setState({
-            });
         });
     }
 
@@ -41,7 +32,6 @@ class HighScores extends Component {
                         return <li key={index}>{listValue}</li>;
                     })}
                 </ul>
-                <button onClick={this.testFunction}>Test button</button>
             </div>
         );
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import firebase from 'firebase';
+//import firebase from 'firebase';
 
 class Login extends Component {
 
@@ -14,6 +14,7 @@ class Login extends Component {
     }
 
     login() {
+        /*
         const auth = firebase.auth();
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then(function(result) {
@@ -35,6 +36,7 @@ class Login extends Component {
             var email = error.email;
             var credential = error.credential
         });
+        */
     }
 
     render() {

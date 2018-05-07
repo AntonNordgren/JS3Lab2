@@ -14,17 +14,16 @@ class App extends Component {
 
         this.state = {
             loggedIn: true,
-            message: "Inte från firebase"
         }
 
     }
 
     componentDidMount() {
-        this.databaseRef.on('value', snap => {
-            this.setState({
-                message: snap.val()
-            });
-        });
+        console.log("Mount");
+    }
+
+    componentWillUnmount() {
+        console.log("Unmount!");
     }
 
     render() {
@@ -40,7 +39,6 @@ class App extends Component {
         return (
             <div className="App">
                 {comp}
-                {this.state.message}
             </div>
         );
     }
