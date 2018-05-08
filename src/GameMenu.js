@@ -28,7 +28,7 @@ class GameMenu extends Component {
                    </div>
         }
         else if(this.state.currentState === "Option 1") {
-            comp = <Game type="capitals" />
+            comp = <Game type="geography" />
         }
         else if(this.state.currentState === "Option 2") {
             comp = <Game type="flags" />

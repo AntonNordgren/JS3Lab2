@@ -10,7 +10,7 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        this.databaseRef = firebase.database().ref().child("message");
+        this.databaseRef = firebase.database().ref('/');
 
         this.state = {
             loggedIn: true,
@@ -20,6 +20,10 @@ class App extends Component {
 
     componentDidMount() {
         console.log("Mount");
+        console.log(this.databaseRef);
+        this.databaseRef.on('value', function(snapshot) {
+            console.log(snapshot.val());
+        });
     }
 
     componentWillUnmount() {
