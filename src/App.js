@@ -19,11 +19,13 @@ class App extends Component {
     }
 
     componentDidMount() {
+        /*
         console.log("Mount");
         console.log(this.databaseRef);
         this.databaseRef.on('value', function(snapshot) {
             console.log(snapshot.val());
         });
+        */
     }
 
     componentWillUnmount() {

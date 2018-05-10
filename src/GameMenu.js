@@ -22,16 +22,16 @@ class GameMenu extends Component {
         let comp;
         if(this.state.currentState === "Menu") {
             comp = <div>
-                    <button onClick={this.stateHandler}>Option 1</button>
-                    <button onClick={this.stateHandler}>Option 2</button>
+                    <button onClick={this.stateHandler}>Geography</button>
+                    <button onClick={this.stateHandler}>Video Games</button>
                     <button onClick={this.stateHandler}>Option 3</button>
                    </div>
         }
-        else if(this.state.currentState === "Option 1") {
+        else if(this.state.currentState === "Geography") {
             comp = <Game type="geography" />
         }
-        else if(this.state.currentState === "Option 2") {
-            comp = <Game type="flags" />
+        else if(this.state.currentState === "Video Games") {
+            comp = <Game type="videogames" />
         }
         else if(this.state.currentState === "Option 3") {
             comp = <Game type="food" />

@@ -2,46 +2,22 @@ import React, { Component } from 'react';
 import './App.css';
 
 import firebase from 'firebase';
+import { ETIME } from 'constants';
 
 class Game extends Component {
     constructor(props) {
         super(props);
 
+        this.databaseRef = firebase.database().ref('Quiz').child('Category').child(this.props.type);
+
         this.state = {
-            typeOfQuiz: this.props.type,
             points: 0,
             currentQuestion: "",
             currentOptions: [],
-            firebaseQuestions: [],
-            testGame: [
-                {
-                    question: "What is the biggest country in the world by area?",
-                    options: [
-                        {text: "USA", correct: false},
-                        {text: "Russia", correct: true},
-                        {text: "Canada", correct: false},
-                        {text: "China", correct: false}
-                    ]
-                },
-                {
-                    question: "What is the capital of Sweden",
-                    options: [
-                        {text: "Malmö", correct: false},
-                        {text: "Gothenburg", correct: false},
-                        {text: "Stockholm", correct: true},
-                        {text: "Uppsala", correct: false}
-                    ]
-                },
-                {
-                    question: "Which is the most populated city in the world",
-                    options: [
-                        {text: "Tokyo", correct: true},
-                        {text: "Shanghai", correct: false},
-                        {text: "Beijing", correct: false},
-                        {text: "Karachi", correct: false}
-                    ]
-                }
-            ]
+            currentIndex: 0,
+            game: undefined,
+            nrOfQuestions: 1,
+            endGame: false
         }
     }
 
@@ -57,61 +33,99 @@ class Game extends Component {
     }
 
     generateQuestion = event => {
-        let questionNr = Math.ceil(Math.random() * (this.state.testGame.length)-1);
-        let newQuestion = this.state.testGame[questionNr].question;
+        console.log(this.state.currentIndex);
 
-        let options = this.shuffle([this.state.testGame[questionNr].options[0],
-                                    this.state.testGame[questionNr].options[1],
-                                    this.state.testGame[questionNr].options[2],
-                                    this.state.testGame[questionNr].options[3]]);
-
-        this.setState({
-            currentQuestion: newQuestion,
-            currentOptions: options
-        });
-    }
-
-    generateQuestionArray() {
-        let newArray = [];
-        for(let i = 0; i < this.state.testGame.length; i++) {
-            newArray.push(this.state.testGame[Math.ceil(Math.random() * this.state.testGame.length) - 1]);
-        }
-        console.log(newArray);
-    }
-    
-    componentWillMount() {
-        this.generateQuestion();
-        this.generateQuestionArray();
-    }
-
-    handleCurrentQuestion = event => {
-        this.generateQuestionArray();
-        if(event.target.value === "true_") {
+        if (this.state.currentIndex !== this.state.nrOfQuestions) {
             this.setState({
-                points: this.state.points + 1
+                currentIndex: this.state.currentIndex + 1
+            });
+
+            let newArray = [];
+
+            for (let i in this.state.game[this.state.currentIndex].options) {
+                newArray.push(this.state.game[this.state.currentIndex].options[i]);
+            }
+
+            this.shuffle(newArray);
+
+            this.setState({
+                currentQuestion: this.state.game[this.state.currentIndex].description,
+                currentOptions: newArray
             });
         }
-
-        this.generateQuestion();
+        else {
+            console.log("Endgame");
+            this.setState({
+                endGame: true
+            });
+        }
     }
 
-    
+    componentDidMount() {
+        this.initializeGame();
+    }
+
+    initializeGame() {
+
+        this.databaseRef.once('value').then((snapshot) => {
+
+            let questionsArray = [];
+            let obj = snapshot.val();
+
+            for (let index in obj) {
+
+                let newQuestion = {
+                    description: "",
+                    options: []
+                };
+
+                newQuestion.description = obj[index].description;
+                newQuestion.options = obj[index].options;
+                questionsArray.push(newQuestion);
+            }
+
+            this.shuffle(questionsArray);
+
+            this.setState({
+                game: questionsArray
+            });
+        })
+    }
+
     render() {
-
-        let comp =  <div>
-                        <div className="questionText">{this.state.currentQuestion}</div>
-                        <div className="gameButtonDiv">
-                            <button onClick={this.handleCurrentQuestion} value={this.state.currentOptions[0].correct}>{this.state.currentOptions[0].text}</button>
-                            <button onClick={this.handleCurrentQuestion} value={this.state.currentOptions[1].correct}>{this.state.currentOptions[1].text}</button>
-                            <button onClick={this.handleCurrentQuestion} value={this.state.currentOptions[2].correct}>{this.state.currentOptions[2].text}</button>
-                            <button onClick={this.handleCurrentQuestion} value={this.state.currentOptions[3].correct}>{this.state.currentOptions[3].text}</button>
-                        </div>
-                    </div>;
-
+        let comp;
+        let buttonInput = event => {
+            if (event.target.value === 'true') {
+                this.setState({
+                    points: this.state.points + 1
+                });
+            }
+            this.generateQuestion();
+        }
+        let buttonList = this.state.currentOptions.map(function (option, index) {
+            return <button onClick={buttonInput} key={index} value={option.correct}>{option.text}</button>
+        })
+        if(this.state.endGame) {
+            comp =
+            <div>
+                You got {this.state.points} points out of {this.state.nrOfQuestions}
+            </div>
+        }
+        else {
+            comp =
+            <div>
+                <div className="questionText">
+                    {this.state.currentQuestion}
+                </div>
+                <div className="gameButtonDiv">
+                    {buttonList}
+                </div>
+                    <button onClick={this.generateQuestion}>Start</button>
+            </div>
+        }
         return (
             <div className="Game">
                 {comp}
-                {this.state.points}
             </div>
         );
     }
