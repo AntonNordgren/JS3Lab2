@@ -46,7 +46,7 @@ class QuizGame extends Component {
         }
         else if(this.state.currentState === "Edit Profile") {
             state = <div className="QuizGameMenu">
-                        <EditProfile text={"You're in Edit Profile"} />
+                        <EditProfile user={this.props.user} gameProfile={this.props.gameProfile} text={"You're in Edit Profile"} />
                         <button className="menuButton" onClick={this.handleCurrentState}>Menu</button>
                     </div>
         }

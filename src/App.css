@@ -29,6 +29,16 @@ body {
     border: solid black 5px;
 }
 
+.loginButton {
+    position: relative;
+    width: 250px;
+    height: 100px;
+    margin: auto;
+    background-color: blue;
+    color: white;
+    font-size: 2em;
+}
+
 .HighScores {
     position: relative;
     width: 100%;

@@ -7,17 +7,21 @@ class HighScores extends Component {
     constructor(props) {
         super(props);
 
-        this.databaseRef = firebase.database().ref('highscores');
+        //this.databaseRef = firebase.database().ref("Quiz").child("highscores/geography");
 
         this.state = {
             text: this.props.text,
-            highScores: []
+            highScores: [],
+            databaseRef: firebase.database().ref("Quiz").child("highscores/geography")
         }
     }
 
     componentDidMount() {
-        this.databaseRef.on('value', snap => {
-        });
+        console.log("Highscores mounted!");
+        this.state.databaseRef.once('value', function(snapshot) {
+            let newObj = snapshot.val();
+            let newArray = [];
+        })
     }
 
     testFunction() {
@@ -25,13 +29,24 @@ class HighScores extends Component {
     }
 
     render() {
+
+        /*
+        let list = this.state.databaseRef.map(function(index) {
+            return <div>{index}</div>
+        });
+        */
+
+        let list = "Hej";
+
+        let comp =  <div>
+                        <ul>
+                            {list}
+                        </ul>
+                    </div>
+
         return (
             <div className="HighScores">
-                <ul>
-                    {this.state.highScores.map((listValue, index) => {
-                        return <li key={index}>{listValue}</li>;
-                    })}
-                </ul>
+                {comp}
             </div>
         );
     }

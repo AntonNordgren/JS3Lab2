@@ -16,7 +16,7 @@ class Game extends Component {
             currentOptions: [],
             currentIndex: 0,
             game: undefined,
-            nrOfQuestions: 1,
+            nrOfQuestions: 10,
             endGame: false
         }
     }

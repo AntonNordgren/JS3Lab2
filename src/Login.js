@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-//import firebase from 'firebase';
+import firebase from 'firebase';
 
 class Login extends Component {
 
@@ -9,41 +9,37 @@ class Login extends Component {
         super(props);
 
         this.state = {
-            userName: ""
+            user: undefined
         }
     }
 
-    login() {
-        /*
-        const auth = firebase.auth();
+    login = event => {
         var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(function(result) {
+        firebase.auth().signInWithPopup(provider)
+        .then((result) => {
             var token = result.credential.accessToken;
             var user = result.user;
 
-            console.log(user.displayName);
+            this.setState({
+                user: user
+            });
 
-            if(user.displayName !== "") {
-                this.setState({
-                    userName: user.displayName
-                });
-            }
-
-
+            this.props.checkUser(this.state.user);
+            
         }).catch(function(error) {
+            /*
             var errorCode = error.code;
             var errorMessage = error.message;
             var email = error.email;
             var credential = error.credential
+            */
         });
-        */
     }
 
     render() {
         return (
             <div className="Login">
-                <button onClick={this.login}>Login</button>
-                loggedin : {this.state.userName}
+                <button className="loginButton" onClick={this.login}>Login</button>
             </div>
         );
     }

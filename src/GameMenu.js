@@ -24,7 +24,7 @@ class GameMenu extends Component {
             comp = <div>
                     <button onClick={this.stateHandler}>Geography</button>
                     <button onClick={this.stateHandler}>Video Games</button>
-                    <button onClick={this.stateHandler}>Option 3</button>
+                    <button onClick={this.stateHandler}>History</button>
                    </div>
         }
         else if(this.state.currentState === "Geography") {
@@ -33,8 +33,8 @@ class GameMenu extends Component {
         else if(this.state.currentState === "Video Games") {
             comp = <Game type="videogames" />
         }
-        else if(this.state.currentState === "Option 3") {
-            comp = <Game type="food" />
+        else if(this.state.currentState === "History") {
+            comp = <Game type="history" />
         }
 
         return (
