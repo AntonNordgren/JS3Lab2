@@ -28,13 +28,13 @@ class GameMenu extends Component {
                    </div>
         }
         else if(this.state.currentState === "Geography") {
-            comp = <Game type="geography" />
+            comp = <Game type="geography" gameProfile={this.props.gameProfile} />
         }
         else if(this.state.currentState === "Video Games") {
-            comp = <Game type="videogames" />
+            comp = <Game type="videogames" gameProfile={this.props.gameProfile} />
         }
         else if(this.state.currentState === "History") {
-            comp = <Game type="history" />
+            comp = <Game type="history" gameProfile={this.props.gameProfile} />
         }
 
         return (

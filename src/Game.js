@@ -9,6 +9,9 @@ class Game extends Component {
         super(props);
 
         this.databaseRef = firebase.database().ref('Quiz').child('Category').child(this.props.type);
+        this.highScoreRef = firebase.database().ref('Quiz').child('highscores').child(this.props.type);
+
+        this.gameProfile = this.props.gameProfile;
 
         this.state = {
             points: 0,
@@ -58,7 +61,42 @@ class Game extends Component {
             this.setState({
                 endGame: true
             });
+
+            this.checkHighScore();
         }
+    }
+
+    checkHighScore() {
+
+        this.highScoreRef.once('value').then((snapshot) => {
+            let obj = snapshot.val();
+            let newArray = [];
+            console.log(obj);
+
+            for(let index in obj) {
+                newArray.push(obj[index]);
+            }
+
+            newArray.sort((a, b) => {
+                return a.score - b.score
+            })
+
+            console.log(newArray);
+
+            if(newArray.length < 3) {
+                this.highScoreRef.push({
+                    name: this.gameProfile.username,
+                    score: this.state.points
+                });
+            }
+            else {
+                console.log("Setting highscore!");
+                for(let index in obj) {
+                    console.log(index);
+                }
+            }
+
+        })
     }
 
     componentDidMount() {
@@ -90,6 +128,10 @@ class Game extends Component {
                 game: questionsArray
             });
         })
+    }
+
+    checkCurrentUser = () => {
+        console.log(this.gameProfile);
     }
 
     render() {
@@ -126,6 +168,7 @@ class Game extends Component {
         return (
             <div className="Game">
                 {comp}
+                <button onClick={this.checkCurrentUser}>Check User</button>
             </div>
         );
     }

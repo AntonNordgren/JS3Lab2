@@ -34,7 +34,7 @@ class QuizGame extends Component {
         }
         else if(this.state.currentState === "Play") {
             state = <div className="QuizGameMenu">
-                        <GameMenu />
+                        <GameMenu gameProfile={this.props.gameProfile}/>
                         <button className="menuButton" onClick={this.handleCurrentState}>Menu</button>
                     </div>
         }
