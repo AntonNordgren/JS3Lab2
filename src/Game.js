@@ -21,7 +21,7 @@ class Game extends Component {
             game: undefined,
             nrOfQuestions: 10,
             endGame: false,
-            sameHighScore: false
+            started: false,
         }
     }
 
@@ -37,42 +37,42 @@ class Game extends Component {
     }
 
     generateQuestion = event => {
-        console.log(this.state.currentIndex);
-
-        console.log(this.gameProfile);
-
-        if (this.state.currentIndex !== this.state.nrOfQuestions) {
-            this.setState({
-                currentIndex: this.state.currentIndex + 1
-            });
-
-            let newArray = [];
-
-            for (let i in this.state.game[this.state.currentIndex].options) {
-                newArray.push(this.state.game[this.state.currentIndex].options[i]);
+        setTimeout(() => {
+            if (this.state.currentIndex !== this.state.nrOfQuestions) {
+                this.setState({
+                    currentIndex: this.state.currentIndex + 1
+                });
+    
+                let newArray = [];
+    
+                for (let i in this.state.game[this.state.currentIndex].options) {
+                    newArray.push(this.state.game[this.state.currentIndex].options[i]);
+                }
+    
+                this.shuffle(newArray);
+    
+                this.setState({
+                    currentQuestion: this.state.game[this.state.currentIndex].description,
+                    currentOptions: newArray
+                });
             }
-
-            this.shuffle(newArray);
-
-            this.setState({
-                currentQuestion: this.state.game[this.state.currentIndex].description,
-                currentOptions: newArray
-            });
-        }
-        else {
-            console.log("Endgame");
-            this.setState({
-                endGame: true
-            });
-
-            this.checkHighScore();
-        }
+            else {
+                console.log("Endgame");
+                this.setState({
+                    endGame: true
+                });
+    
+                this.checkHighScore();
+            }
+        },1000);
     }
 
     checkHighScore() {
+
         this.highScoreRef.once('value').then((snapshot) => {
             let obj = snapshot.val();
             let newArray = [];
+            let foundUser = false;
             console.log(obj);
 
             for(let index in obj) {
@@ -85,29 +85,24 @@ class Game extends Component {
 
             console.log(newArray);
 
-            for(let i = 0; i < newArray.length; i++) {
-                if(this.gameProfile.username === newArray[i].name && this.state.points === newArray[i].score) {
-                    console.log("Found someone with the same Score and name!");
-                    this.setState({
-                        sameHighScore: true
-                    });
+            for(let i in obj) {
+                if(obj[i].name === this.gameProfile.username && this.state.points === obj[i].score) {
+                    foundUser = true;
                 }
             }
-
             
-            if(!this.state.sameHighScore) {
+            if(!foundUser) {
                 this.highScoreRef.push({
                     name: this.gameProfile.username,
                     score: this.state.points
                 });
-
             }
-
         })
     }
 
     componentDidMount() {
         this.initializeGame();
+        console.log(this.state.gameProfile);
     }
 
     initializeGame() {
@@ -137,10 +132,6 @@ class Game extends Component {
         })
     }
 
-    checkCurrentUser = () => {
-        console.log(this.gameProfile);
-    }
-
     render() {
         let comp;
         let buttonInput = event => {
@@ -151,9 +142,23 @@ class Game extends Component {
             }
             this.generateQuestion();
         }
+
+        const style = {
+            color: "green",
+            backgroundcolor: "white"
+        }
+
         let buttonList = this.state.currentOptions.map(function (option, index) {
+            if(option.correct) {
+                return <button onClick={buttonInput} style={style} key={index} value={option.correct}>{option.text}</button>
+            }
             return <button onClick={buttonInput} key={index} value={option.correct}>{option.text}</button>
         })
+
+        if(!this.state.started) {
+            <button onClick={this.generateQuestion}>Start</button>
+        }
+
         if(this.state.endGame) {
             comp =
             <div>
