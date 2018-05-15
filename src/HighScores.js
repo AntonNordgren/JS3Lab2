@@ -21,15 +21,28 @@ class HighScores extends Component {
     }
 
     getHighScore() {
-        console.log(this.state.type);
-        firebase.database().ref('Quiz').child('highscores/' + this.state.type).once('value').then((snapshot) => {
+            console.log(this.state.type);
+            firebase.database().ref('Quiz').child('highscores/' + this.state.type).once('value').then((snapshot) => {
             console.log(snapshot.val());
             let obj = snapshot.val();
             let newArray = [];
 
+            console.log(newArray);
+
             for(let index in obj) {
                 newArray.push(obj[index]);
             }
+            
+            newArray.sort((a, b) => {
+                return b.score -a.score
+            })
+
+            if(newArray.length > 5) {
+                console.log("Array bigger than 5")
+                console.log(newArray.slice(0, 5));
+                newArray = newArray.slice(0, 5)
+            }
+
             this.setState({
                 highScores: newArray
             });
@@ -66,16 +79,17 @@ class HighScores extends Component {
             let result =
             <li key={index}>
                 <div>
-                    {option.name + " " + option.score}
+                    {option.name + " - " + option.score + " points"}
                 </div>
             </li>
             return result;
         })
-
+        
         let comp =  <div>
-                        <ul>
+                        {this.state.type.charAt(0).toUpperCase() + this.state.type.slice(1)}
+                        <ol>
                             {highScoreList}
-                        </ul>
+                        </ol>
                     </div>
 
         return (

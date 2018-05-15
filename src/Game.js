@@ -20,7 +20,8 @@ class Game extends Component {
             currentIndex: 0,
             game: undefined,
             nrOfQuestions: 10,
-            endGame: false
+            endGame: false,
+            sameHighScore: false
         }
     }
 
@@ -37,6 +38,8 @@ class Game extends Component {
 
     generateQuestion = event => {
         console.log(this.state.currentIndex);
+
+        console.log(this.gameProfile);
 
         if (this.state.currentIndex !== this.state.nrOfQuestions) {
             this.setState({
@@ -67,7 +70,6 @@ class Game extends Component {
     }
 
     checkHighScore() {
-
         this.highScoreRef.once('value').then((snapshot) => {
             let obj = snapshot.val();
             let newArray = [];
@@ -83,17 +85,22 @@ class Game extends Component {
 
             console.log(newArray);
 
-            if(newArray.length < 3) {
+            for(let i = 0; i < newArray.length; i++) {
+                if(this.gameProfile.username === newArray[i].name && this.state.points === newArray[i].score) {
+                    console.log("Found someone with the same Score and name!");
+                    this.setState({
+                        sameHighScore: true
+                    });
+                }
+            }
+
+            
+            if(!this.state.sameHighScore) {
                 this.highScoreRef.push({
                     name: this.gameProfile.username,
                     score: this.state.points
                 });
-            }
-            else {
-                console.log("Setting highscore!");
-                for(let index in obj) {
-                    console.log(index);
-                }
+
             }
 
         })
