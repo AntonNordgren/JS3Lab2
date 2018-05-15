@@ -85,8 +85,8 @@ class HighScores extends Component {
             return result;
         })
         
-        let comp =  <div>
-                        {this.state.type.charAt(0).toUpperCase() + this.state.type.slice(1)}
+        let comp =  <div className='HighscoreList'>
+                        <span>{this.state.type.charAt(0).toUpperCase() + this.state.type.slice(1)}</span>
                         <ol>
                             {highScoreList}
                         </ol>
@@ -94,12 +94,13 @@ class HighScores extends Component {
 
         return (
             <div className="HighScores">
-                {comp}
+                
                 <div className="highScoreButtons">
                     <button onClick={this.handleHighScoreCategory} value={1}>Geography</button>
                     <button onClick={this.handleHighScoreCategory} value={2}>Video Games</button>
                     <button onClick={this.handleHighScoreCategory} value={3}>History</button>
                 </div>
+                {comp}
             </div>
         );
     }

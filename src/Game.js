@@ -175,7 +175,6 @@ class Game extends Component {
         return (
             <div className="Game">
                 {comp}
-                <button onClick={this.checkCurrentUser}>Check User</button>
             </div>
         );
     }
