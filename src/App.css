@@ -17,7 +17,7 @@ body {
 .QuizGame {
     position: relative;
     width: 850px;
-    height: 550px;
+    height: 600px;
     margin: auto;
     top: 30px;
     background-color: rgba(59,134,134, 0.8);
@@ -28,7 +28,7 @@ body {
 .Login {
     position: relative;
     width: 850px;
-    height: 550px;
+    height: 600px;
     margin: auto;
     top: 30px;
     background-color: #3B8686;
@@ -63,6 +63,11 @@ body {
     color: white;
 }
 
+.game {
+    margin-top: 20px;
+    position: relative;
+}
+
 .QuizGameMenu {
     position: relative;
     display: flex;
@@ -88,7 +93,7 @@ body {
     position: relative;
 }
 .QuizGameMenu > .menuButton {
-    margin-top: 125px;
+    margin-top: 160px;
     left: 20%;
 }
 
@@ -109,8 +114,18 @@ body {
     left: 5%;
 }
 
+.rightAnswer {
+    color: #CFF09E;
+}
+
 .Game > div {
     left: 20%;
+    margin-top:50px;
+}
+
+.Game > div > span {
+    color: white;
+    font-size: 1.5em;
 }
 
 .questionText {
@@ -184,4 +199,10 @@ li {
 .EditProfile > div > button {
     width: 300px;
     height: 45px;
+}
+.topDiv {
+    margin-bottom: 10px;
+    color: #0B486B;
+    font-size: 1.2em;
+    font-weight: bold;
 }

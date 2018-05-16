@@ -83,7 +83,7 @@ class Game extends Component {
     
                 this.checkHighScore();
             }
-        },1000);
+        },2000);
     }
 
     checkHighScore() {
@@ -179,7 +179,7 @@ class Game extends Component {
         let rightAnswerDiv;
 
         if(this.state.showRightAnswer) {
-            rightAnswerDiv = <div>
+            rightAnswerDiv = <div className='rightAnswer'>
                                 The right answer was {this.state.rightAnswer}
                             </div>
         }
@@ -222,27 +222,31 @@ class Game extends Component {
         if(this.state.endGame) {
             comp =
             <div>
-                You got {this.state.points} points out of {this.state.nrOfQuestions}
+                <span>You got {this.state.points} points out of {this.state.nrOfQuestions} </span>
                 <button onClick={this.playAgain}>Play Again</button>
             </div>
         }
         else {
             comp =
             <div>
-                <div>
-                    Points: {this.state.points}
+                <div className='topDiv'>
+                    <div>
+                        Points: {this.state.points}
+                    </div>
+                    <div>
+                        Question {this.state.currentIndex} of {this.state.nrOfQuestions}
+                    </div>
+                    {rightAnswerDiv}
+                </div>  
+                <div className='game'>
+                    <div className="questionText">
+                        {this.state.currentQuestion}
+                    </div>
+                    <div className="gameButtonDiv">
+                        {buttonList}
+                    </div>
+                    {start}
                 </div>
-                <div>
-                    Question {this.state.currentIndex} of {this.state.nrOfQuestions}
-                </div>
-                {rightAnswerDiv}
-                <div className="questionText">
-                    {this.state.currentQuestion}
-                </div>
-                <div className="gameButtonDiv">
-                    {buttonList}
-                </div>
-                {start}
             </div>
         }
         return (
