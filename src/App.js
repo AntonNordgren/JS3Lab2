@@ -138,7 +138,6 @@ class App extends Component {
         return (
             <div className="App">
                 {comp}
-                <button onClick={this.checkUser}>State</button>
             </div>
         );
     }

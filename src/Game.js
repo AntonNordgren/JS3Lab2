@@ -156,8 +156,8 @@ class Game extends Component {
     }
 
     playAgain = () => {
-        console.log("Play agina");
-        this.state = {
+        console.log("Play again");
+        this.setState({
             points: 0,
             currentQuestion: "",
             currentOptions: [],
@@ -168,9 +168,8 @@ class Game extends Component {
             started: false,
             rightAnswer: "",
             showRightAnswer: false
-        }
+        });
         this.initializeGame();
-        this.generateQuestion();
     }
 
     render() {

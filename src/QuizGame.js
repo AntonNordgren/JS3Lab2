@@ -10,11 +10,13 @@ class QuizGame extends Component {
         super(props);
 
         this.state = {
-            currentState: "Menu"
+            currentState: "Menu",
+            user: this.props.user
         }
     }
 
     componentWillMount() {
+        console.log(this.props.user);
     }
 
     handleCurrentState = event => {
@@ -46,7 +48,7 @@ class QuizGame extends Component {
         }
         else if(this.state.currentState === "Edit Profile") {
             state = <div className="QuizGameMenu">
-                        <EditProfile user={this.props.user} gameProfile={this.props.gameProfile} text={"You're in Edit Profile"} />
+                        <EditProfile user={this.state.user} gameProfile={this.props.gameProfile} text={"You're in Edit Profile"} />
                         <button className="menuButton" onClick={this.handleCurrentState}>Menu</button>
                     </div>
         }

@@ -17,60 +17,49 @@ class HighScores extends Component {
     }
 
     componentDidMount() {
-        this.getHighScore();
+        this.getHighScore("geography");
     }
 
-    getHighScore() {
+    getHighScore(para) {
             console.log(this.state.type);
-            firebase.database().ref('Quiz').child('highscores/' + this.state.type).once('value').then((snapshot) => {
-            console.log(snapshot.val());
-            let obj = snapshot.val();
-            let newArray = [];
-
-            console.log(newArray);
-
-            for(let index in obj) {
-                newArray.push(obj[index]);
-            }
-            
-            newArray.sort((a, b) => {
-                return b.score -a.score
-            })
-
-            if(newArray.length > 5) {
-                console.log("Array bigger than 5")
-                console.log(newArray.slice(0, 5));
-                newArray = newArray.slice(0, 5)
-            }
-
-            this.setState({
-                highScores: newArray
+            firebase.database().ref('Quiz').child('highscores/' + para).once('value').then((snapshot) => {
+                console.log(snapshot.val());
+                let obj = snapshot.val();
+                let newArray = [];
+    
+                console.log(newArray);
+    
+                for(let index in obj) {
+                    newArray.push(obj[index]);
+                }
+                
+                newArray.sort((a, b) => {
+                    return b.score -a.score
+                })
+    
+                if(newArray.length > 5) {
+                    newArray = newArray.slice(0, 5)
+                }
+    
+                this.setState({
+                    highScores: newArray
+                });
             });
-        })
     }
 
     handleHighScoreCategory = event => {
-        console.log(event.target.value);
-
-        let type = "";
+        let para = "";
 
         if(event.target.value == 1) {
-            console.log("event.target: " + event.target.value);
-            this.setState({
-                type: "geography"
-            });
+            para = "geography";
         }
         else if (event.target.value == 2) {
-            this.setState({
-                type: "videogames"
-            });
+            para = "videogames";
         }
         else if (event.target.value == 3) {
-            this.setState({
-                type: "history"
-            });
+            para = "history";
         }
-        this.getHighScore();
+        this.getHighScore(para);
     }
 
     render() {
