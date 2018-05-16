@@ -22,6 +22,8 @@ class Game extends Component {
             nrOfQuestions: 10,
             endGame: false,
             started: false,
+            rightAnswer: "",
+            showRightAnswer: false
         }
     }
 
@@ -37,7 +39,15 @@ class Game extends Component {
     }
 
     generateQuestion = event => {
+        if(this.state.currentIndex !== 0) {
+            this.setState({
+                showRightAnswer: true
+            });
+        }
         setTimeout(() => {
+            this.setState({
+                showRightAnswer: false
+            });
             if (this.state.currentIndex !== this.state.nrOfQuestions) {
                 this.setState({
                     currentIndex: this.state.currentIndex + 1
@@ -50,6 +60,15 @@ class Game extends Component {
                 }
     
                 this.shuffle(newArray);
+
+                for(let i = 0; i < newArray.length; i++) {
+                    if(newArray[i].correct === true) {
+                        console.log(newArray[i]);
+                        this.setState({
+                            rightAnswer: newArray[i].text
+                        });
+                    }
+                }
     
                 this.setState({
                     currentQuestion: this.state.game[this.state.currentIndex].description,
@@ -68,7 +87,6 @@ class Game extends Component {
     }
 
     checkHighScore() {
-
         this.highScoreRef.once('value').then((snapshot) => {
             let obj = snapshot.val();
             let newArray = [];
@@ -102,11 +120,9 @@ class Game extends Component {
 
     componentDidMount() {
         this.initializeGame();
-        console.log(this.state.gameProfile);
     }
 
     initializeGame() {
-
         this.databaseRef.once('value').then((snapshot) => {
 
             let questionsArray = [];
@@ -132,8 +148,56 @@ class Game extends Component {
         })
     }
 
+    handleStartButton = () => {
+        this.setState({
+            started: true
+        });
+        this.generateQuestion();
+    }
+
+    playAgain = () => {
+        console.log("Play agina");
+        this.state = {
+            points: 0,
+            currentQuestion: "",
+            currentOptions: [],
+            currentIndex: 0,
+            game: undefined,
+            nrOfQuestions: 10,
+            endGame: false,
+            started: false,
+            rightAnswer: "",
+            showRightAnswer: false
+        }
+        this.initializeGame();
+        this.generateQuestion();
+    }
+
     render() {
         let comp;
+        let start;
+        let showStart;
+        let rightAnswerDiv;
+
+        if(this.state.showRightAnswer) {
+            rightAnswerDiv = <div>
+                                The right answer was {this.state.rightAnswer}
+                            </div>
+        }
+        else {
+            rightAnswerDiv = <div></div>
+        }
+
+        if(!this.state.started) {
+            start = 
+           <div>
+               <button onClick={this.handleStartButton}>Start</button>
+            </div>
+        }
+        else {
+            start = <div></div>
+        }
+
         let buttonInput = event => {
             if (event.target.value === 'true') {
                 this.setState({
@@ -149,9 +213,6 @@ class Game extends Component {
         }
 
         let buttonList = this.state.currentOptions.map(function (option, index) {
-            if(option.correct) {
-                return <button onClick={buttonInput} style={style} key={index} value={option.correct}>{option.text}</button>
-            }
             return <button onClick={buttonInput} key={index} value={option.correct}>{option.text}</button>
         })
 
@@ -163,18 +224,26 @@ class Game extends Component {
             comp =
             <div>
                 You got {this.state.points} points out of {this.state.nrOfQuestions}
+                <button onClick={this.playAgain}>Play Again</button>
             </div>
         }
         else {
             comp =
             <div>
+                <div>
+                    Points: {this.state.points}
+                </div>
+                <div>
+                    Question {this.state.currentIndex} of {this.state.nrOfQuestions}
+                </div>
+                {rightAnswerDiv}
                 <div className="questionText">
                     {this.state.currentQuestion}
                 </div>
                 <div className="gameButtonDiv">
                     {buttonList}
                 </div>
-                    <button onClick={this.generateQuestion}>Start</button>
+                {start}
             </div>
         }
         return (
